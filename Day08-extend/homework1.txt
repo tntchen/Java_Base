@@ -1,0 +1,41 @@
+package cn.homework1;
+//创建一个测试类调用Son方法
+public class Test {
+	public static void main(String[] args) {
+		//创建对象
+		Son son = new Son();
+		//调用方法
+		son.show();
+		son.show2();
+	}
+}
+
+
+//定义一个son类实现Mother和Father接口
+class Son implements Mother,Father {
+
+	@Override
+	public void show() {
+		//重写show抽象方法
+		System.out.println("show方法已运行");
+	}
+
+	@Override
+	public void show2() {
+		//重写show2抽象方法
+		System.out.println("show2方法已运行");
+	}	
+}
+
+
+//定义Mother接口
+interface Mother {
+	//定义show2方法
+	public abstract void show2();
+}
+
+//定义Father接口
+interface Father {
+	//定义show方法
+	public abstract void show();
+}

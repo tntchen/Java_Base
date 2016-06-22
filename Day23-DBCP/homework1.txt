@@ -1,0 +1,65 @@
+package cn.homwork;
+
+import javax.sql.DataSource;
+
+import org.apache.commons.dbcp.BasicDataSource;
+
+/*
+ * 创建DBCP连接池工具类
+ */
+public class DBCPUtils {
+	//创建连接池
+	private static BasicDataSource dataSource = new BasicDataSource();
+	
+	public static final String DRIVER_CLASS_NAME = "com.mysql.jdbc.Driver";
+	public static final String URL = "jdbc:mysql://localhost:3306/gjp";
+	public static final String USER_NAME = "root";
+	public static final String PASSWORD = "root";
+	
+	//通过静态代码块完成dataSource对象信息配置
+	static {
+		dataSource.setDriverClassName(DRIVER_CLASS_NAME);
+		dataSource.setUrl(URL);
+		dataSource.setUsername(USER_NAME);
+		dataSource.setPassword(PASSWORD);
+	}
+	
+	public static DataSource getDataSource() {
+		return dataSource;
+	}
+}
+
+package cn.homwork;
+/*
+ * 使用连接池来获取数据库连接对象，并使用DBUitls工具类查询gjp_sort表中parent=
+ * “支出”的所有sname集合，并将查询的结果打印到控制台上
+ */
+
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
+
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.ArrayListHandler;
+
+import org.junit.Test;
+
+public class homework1 {
+	
+	@Test
+	public void method() {
+		try {
+			QueryRunner qr = new QueryRunner(DBCPUtils.getDataSource());
+			String sql = "select sname from gjp_sort where parent =? ";
+			Object[] params = {"支出"};
+			List<Object[]> list = qr.query(sql, new ArrayListHandler(), params);
+			
+			for (Object[] objects : list) {
+				System.out.println(Arrays.toString(objects));
+			}
+						
+		} catch (SQLException e) {		
+			throw new RuntimeException(e);
+		}
+	}
+}

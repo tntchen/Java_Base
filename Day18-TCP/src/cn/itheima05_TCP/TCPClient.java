@@ -1,0 +1,48 @@
+package cn.itheima05_TCP;
+
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
+/*
+ * 文件上传-客户端
+ */
+public class TCPClient {
+	public static void main(String[] args) throws IOException {
+		//2.创建客户端Socket连接服务器
+		Socket socket = new Socket("192.168.74.105", 8888);
+		//3.获取Socket流中的输出流,把数据写到服务器
+		OutputStream out = socket.getOutputStream();
+		//4.创建字节输入流,用来读取数据源的字节
+		BufferedInputStream fileIn = new BufferedInputStream(new FileInputStream("E:\\workspace\\Day18\\test.jpg"));
+		//5.把图片数据写入到Socket的输出流中(传给服务器)
+		byte[] buffer = new byte[1024];
+		int len = -1;
+		while ((len = fileIn.read(buffer)) != -1) {
+			out.write(buffer, 0, len);
+		}
+		//6.客户端发送数据完毕,结束Socket输出流的写入操作,告诉服务器端
+		socket.shutdownOutput();//禁用此Socket的输出流
+		
+		//---------------------------反馈信息------------------------------
+		//12.获取Socket的输入流,读反馈信息
+		InputStream in = socket.getInputStream();
+		byte[] info = new byte[1024];
+		//反馈信息存储带info数组中并记录字节个数
+		int length = in.read(info);
+		//显示反馈结果 
+		System.out.println(new String(info, 0, length));
+		
+		//关闭流
+		out.close();
+		fileIn.close();
+		in.close();
+		socket.close();
+		
+			
+	}
+}

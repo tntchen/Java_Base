@@ -1,0 +1,142 @@
+package cn.homwork;
+/*
+ * 使用连接池来获取数据库连接对象，并使用DBUitls工具类，书写一个工具类，工具类
+ * 中包含1个查询方法，1个更新方法，查询方法根据传递的实参sname完成对应的parent
+ * 查询，更新方法根据传递的实参sid完成对应的sname
+ */
+
+import java.sql.SQLException;
+import java.util.Scanner;
+
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.BeanHandler;
+
+public class homework2 {
+	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner(System.in);
+		System.out.println("请输出查询sname:");
+		String sname = sc.nextLine();
+		homework2 h = new homework2();
+		h.method1(sname);
+		System.out.println("请输入要更改的sid:");
+		String sid = sc.nextLine();
+		System.out.println("请输入要更改的sname:");
+		String sname1 = sc.nextLine();
+		h.method2(sid,sname1);
+	}
+		
+	public void method1(String sname) {
+		//查询方法
+		try {
+			QueryRunner qr = new QueryRunner(DBCPUtils.getDataSource());
+			String sql = "select sname,parent from gjp_sort where sname=?";
+			Object[] params = {sname};
+			gjp_sort sort = qr.query(sql, new BeanHandler<gjp_sort>(gjp_sort.class), params);
+			System.out.println(sort.getSname()+"-"+sort.getParent());
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public void method2(String sid,String sname) {
+		try {
+			QueryRunner qr = new QueryRunner(DBCPUtils.getDataSource());
+			String sql = "update gjp_sort set sname=? where sid=?";
+			Object[] params = {sname,sid};
+			
+			int update = qr.update(sql, params);
+			System.out.println(update);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+}
+
+package cn.homwork;
+
+import javax.sql.DataSource;
+
+import org.apache.commons.dbcp.BasicDataSource;
+
+/*
+ * 创建DBCP连接池工具类
+ */
+public class DBCPUtils {
+	//创建连接池
+	private static BasicDataSource dataSource = new BasicDataSource();
+	
+	public static final String DRIVER_CLASS_NAME = "com.mysql.jdbc.Driver";
+	public static final String URL = "jdbc:mysql://localhost:3306/gjp";
+	public static final String USER_NAME = "root";
+	public static final String PASSWORD = "root";
+	
+	//通过静态代码块完成dataSource对象信息配置
+	static {
+		dataSource.setDriverClassName(DRIVER_CLASS_NAME);
+		dataSource.setUrl(URL);
+		dataSource.setUsername(USER_NAME);
+		dataSource.setPassword(PASSWORD);
+	}
+	
+	public static DataSource getDataSource() {
+		return dataSource;
+	}
+}
+
+package cn.homwork;
+
+import java.io.Serializable;
+
+/*
+ * gjp_sort表的javabean
+ */
+public class gjp_sort implements Serializable {
+	
+	private String sid;
+	private String sname;
+	private String parent;
+	private String sdesc;
+	
+	public gjp_sort() {
+		super();
+		
+	}
+	public gjp_sort(String sid, String sname, String parent, String sdesc) {
+		super();
+		this.sid = sid;
+		this.sname = sname;
+		this.parent = parent;
+		this.sdesc = sdesc;
+	}
+	public String getSid() {
+		return sid;
+	}
+	public void setSid(String sid) {
+		this.sid = sid;
+	}
+	public String getSname() {
+		return sname;
+	}
+	public void setSname(String sname) {
+		this.sname = sname;
+	}
+	public String getParent() {
+		return parent;
+	}
+	public void setParent(String parent) {
+		this.parent = parent;
+	}
+	@Override
+	public String toString() {
+		return "gjp_sort [sid=" + sid + ", sname=" + sname + ", parent=" + parent + ", sdesc=" + sdesc + "]";
+	}
+	public String getSdesc() {
+		return sdesc;
+	}
+	public void setSdesc(String sdesc) {
+		this.sdesc = sdesc;
+	}
+	
+	
+}

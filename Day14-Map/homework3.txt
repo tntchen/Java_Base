@@ -1,0 +1,26 @@
+package cn.homework3;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
+/*
+ * 在HashSet集合中存入String类型的的数据，并用迭代器的方式遍历出来
+ */
+public class HashSetDemo {
+	public static void main(String[] args) {
+		//创建HashSet对象
+		Set<String> set = new HashSet<String>();
+		//存入数据
+		set.add("Bob");
+		set.add("Tom");
+		set.add("David");
+		set.add("Amy");
+		
+		//通过迭代器的方式遍历
+		for (Iterator it = set.iterator(); it.hasNext();) {
+			String str = (String) it.next();
+			System.out.println(str);
+		}
+	}
+}

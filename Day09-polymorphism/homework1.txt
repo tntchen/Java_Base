@@ -1,0 +1,103 @@
+package cn.homework1;
+/*
+ * 分析:
+ * Animal类:父类,属性有姓名年龄,功能包括跑步方法,一个抽象的吃方法
+ * Cat类,Dog类:子类,分别重写了抽象的吃方法
+ * Test类:测试类,调用不同功能进行测试
+ */
+/*
+ * 测试类
+ */
+public class Test {
+	public static void main(String[] args) {
+		//创建对象--猫
+		Animal a = new Cat("Tom",5);
+		//跑步
+		a.run();
+		//吃饭
+		a.eat();
+		
+		//创建对象--狗
+		Animal b = new Dog("Doge",4);
+		b.run();
+		b.eat();
+	}
+}
+
+package cn.homework1;
+/*
+ * 定义动物父类
+ */
+public abstract class Animal {
+	//定义成员变量
+	private String name;
+	private int age;
+	//构造方法
+	public Animal() {
+		super();
+	}
+	public Animal(String name, int age) {
+		super();
+		this.name = name;
+		this.age = age;
+	}
+	//set/get函数
+	public String getName() {
+		return name;
+	}
+	public int getAge() {
+		return age;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
+	//跑步方法
+	public void run() {
+		System.out.println(getAge()+"岁的"+getName()+"正在跑步");
+	}
+	//吃饭方法
+	public abstract void eat();
+}
+
+package cn.homework1;
+/*
+ * 子类,猫类
+ */
+public class Cat extends Animal {
+
+	@Override
+	public void eat() {
+		//重写eat抽象方法
+		System.out.println("吃鱼");
+	}
+	//构造方法
+	public Cat() {
+		super();
+	}
+
+	public Cat(String name, int age) {
+		super(name, age);
+	}
+}
+
+package cn.homework1;
+
+public class Dog extends Animal {
+
+	@Override
+	public void eat() {
+		//重写eat抽象方法
+		System.out.println("吃骨头");
+	}
+	//构造方法
+	public Dog() {
+		super();
+	}
+
+	public Dog(String name, int age) {
+		super(name, age);
+	}	
+}

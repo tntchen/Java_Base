@@ -1,0 +1,71 @@
+package cn.homework2;
+/*
+ * 创建测试类，在测试类中分别调用Student类的吃饭睡觉和学习方法
+ */
+public  class Test {
+	public static void main(String[] args) {
+		Student s = new Student("Jonah");
+		//调用吃饭方法
+		s.eat();
+		//调用睡觉方法
+		s.sleep();
+		//调用学习方法
+		s.study();
+	}
+}
+
+package cn.homework2;
+/*
+ * 定义一个Person类，定义吃饭和睡觉方法并用打印语句描述
+ */
+public abstract class Person {
+	private String name;//定义人的姓名
+	//构造方法
+	public Person() {
+		super();
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	//get/set
+	public String getName() {
+		return name;
+	}
+
+	public Person(String name) {
+		super();
+		this.name = name;
+	}
+
+	//睡觉方法
+	public void sleep() {
+		System.out.println(getName()+"正在睡觉");
+	}
+	//吃饭方法
+	public abstract void eat();
+}
+
+package cn.homework2;
+/*
+ * 定义Student类继承Person类，定义学习方法，并重写Person类的吃饭方法
+ */
+public class Student extends Person {
+
+	@Override
+	public void eat() {
+		//重写吃饭方法
+		System.out.println(getName()+"正在吃饭");
+	}
+	//定义特有的学习方法
+	public void study() {
+		System.out.println("正在努力学习");
+	}
+	//构造方法
+	public Student() {
+		super();
+	}
+	public Student(String name) {
+		super(name);
+	}
+}
